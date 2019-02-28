@@ -7,19 +7,20 @@ const ROOT_URL =
   'https://us-central1-one-time-password-1c34f.cloudfunctions.net';
 
 class SignUpForm extends Component {
-  state = { phone: '' };
+  state = { phone: '', error: '' };
 
   // useing es2017 syntax to bind this to this component
   // instead of using this.handleSubmit.bind(this) when passing
   // as callback
-  handleSubmit = () => {
-    axios
-      .post(`${ROOT_URL}/createUser`, { phone: this.state.phone })
-      .then(() => {
-        axios.post(`${ROOT_URL}/requestOneTimePassword`, {
-          phone: this.state.phone
-        });
+  handleSubmit = async () => {
+    try {
+      await axios.post(`${ROOT_URL}/createUser`, { phone: this.state.phone });
+      await axios.post(`${ROOT_URL}/requestOneTimePassword`, {
+        phone: this.state.phone
       });
+    } catch (err) {
+      this.setState({ error: err });
+    }
   };
 
   render() {
