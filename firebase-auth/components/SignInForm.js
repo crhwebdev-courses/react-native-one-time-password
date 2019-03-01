@@ -18,7 +18,8 @@ class SignInForm extends Component {
       });
 
       //sign into firebase auth with custom token recieved form above request
-      firebase.auth().signInWithCustomToken(data.token);
+      await firebase.auth().signInWithCustomToken(data.token);
+      this.setState({ phone: '', code: '' });
     } catch (error) {
       this.setState({ error });
       console.log(error);
